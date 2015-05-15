@@ -986,7 +986,6 @@ ARMSOCScreenInit(SCREEN_INIT_ARGS_DECL)
 	xf86CrtcConfigPtr xf86_config;
 	int j;
 	const char *fbdev;
-	int depth;
 
 	TRACE_ENTER();
 
@@ -996,22 +995,14 @@ ARMSOCScreenInit(SCREEN_INIT_ARGS_DECL)
 		goto fail;
 	}
 
-	/* We create a single visual with the depth set to the
-	 * screen's bpp as otherwise XComposite will add an alternate
-	 * visual and ARGB8888 windows will be implicitly redirected.
-	 * The initial scanout buffer is created with the same depth
-	 * to match the visual.
-	 */
-	depth = pScrn->bitsPerPixel;
-
 	/* Allocate initial scanout buffer.*/
 	DEBUG_MSG("allocating new scanout buffer: %dx%d %d %d",
 			pScrn->virtualX, pScrn->virtualY,
-			depth, pScrn->bitsPerPixel);
+			pScrn->bitsPerPixel, pScrn->bitsPerPixel);
 	assert(!pARMSOC->scanout);
 	/* Screen creates and takes a ref on the scanout bo */
 	pARMSOC->scanout = armsoc_bo_new_with_dim(pARMSOC->dev, pScrn->virtualX,
-			pScrn->virtualY, depth, pScrn->bitsPerPixel,
+			pScrn->virtualY, pScrn->bitsPerPixel, pScrn->bitsPerPixel,
 			ARMSOC_BO_SCANOUT);
 	if (!pARMSOC->scanout) {
 		ERROR_MSG("Cannot allocate scanout buffer\n");
@@ -1042,14 +1033,22 @@ ARMSOCScreenInit(SCREEN_INIT_ARGS_DECL)
 	/* Reset the visual list. */
 	miClearVisualTypes();
 
-	if (!miSetVisualTypes(depth,
-			miGetDefaultVisualMask(depth),
+	if (!miSetVisualTypes(pScrn->depth,
+			miGetDefaultVisualMask(pScrn->depth),
 			pScrn->rgbBits, pScrn->defaultVisual)) {
 		ERROR_MSG(
 				"Cannot initialize the visual type for %d depth, %d bits per pixel!",
-				depth,
+				pScrn->depth,
 				pScrn->bitsPerPixel);
 		goto fail2;
+	}
+
+	/* Also add a 32-bit depth XRGB8888 visual */
+	if (!miSetVisualTypes(32, miGetDefaultVisualMask(pScrn->depth),
+				pScrn->rgbBits, pScrn->defaultVisual)) {
+		WARNING_MSG("Cannot initialize a depth-32 visual");
+	} else {
+		INFO_MSG("Initialized a depth-32 visual for XRGB8888");
 	}
 
 	if (!miSetPixmapDepths()) {
