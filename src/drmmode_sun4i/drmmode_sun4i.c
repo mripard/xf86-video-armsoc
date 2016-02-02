@@ -79,7 +79,7 @@ static int create_custom_gem(int fd, struct armsoc_create_gem *create_gem)
 	if (ret)
 		return ret;
 
-	/* Convert custom create_rockchip to generic create_gem */
+	/* Convert custom create_sun4i to generic create_gem */
 	create_gem->handle = create_sun4i.handle;
 	create_gem->pitch = pitch;
 	create_gem->size = create_sun4i.size;
