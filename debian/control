@@ -1,0 +1,25 @@
+Source: xf86-video-armsoc
+Section: x11
+Priority: optional
+Maintainer: Maxime Ripard <maxime.ripard@free-electrons.com>
+Standards-Version: 3.9.6
+Build-Depends: debhelper (>= 9),
+               libdrm-dev (>= 2.2),
+               libudev-dev,
+               libxext-dev,
+               pkg-config,
+               x11proto-core-dev,
+               x11proto-fonts-dev,
+               x11proto-gl-dev,
+               x11proto-xf86dri-dev,
+               xutils-dev,
+               xserver-xorg-dev (>= 2:1.9.4)
+
+Package: xserver-xorg-video-armsoc
+Architecture: armhf
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         ${xviddriver:Depends}
+Provides: ${xviddriver:Provides}
+Description: X.Org X Server -- ARM SoC display driver for sun4i DRM
+

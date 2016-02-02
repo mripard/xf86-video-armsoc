@@ -1,0 +1,5 @@
+xf86-video-armsoc (1.4-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Maxime Ripard <maxime.ripard@free-electrons.com>  Tue, 08 Dec 2015 15:45:18 +0100
