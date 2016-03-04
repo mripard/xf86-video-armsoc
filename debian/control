@@ -13,7 +13,9 @@ Build-Depends: debhelper (>= 9),
                x11proto-gl-dev,
                x11proto-xf86dri-dev,
                xutils-dev,
-               xserver-xorg-dev (>= 2:1.9.4)
+               xserver-xorg-dev (>= 2:1.9.4),
+               quilt,
+               dh-autoreconf
 
 Package: xserver-xorg-video-armsoc
 Architecture: armhf
