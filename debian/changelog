@@ -1,3 +1,11 @@
+xf86-video-armsoc (1.4-2) unstable; urgency=low
+
+  * Use depth-24 visual as default, but create XRGB8888 too
+  * Only allocate DRI2 pixmaps with GEM
+  * Fix missing build dependencies
+
+ -- Ben Young <software@nextthing.co>  Thu, 22 Sep 2016 11:47:18 -0800
+
 xf86-video-armsoc (1.4-1) unstable; urgency=low
 
   * Initial release
